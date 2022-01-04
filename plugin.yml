@@ -1,0 +1,8 @@
+---
+name: Voting38
+version: 0.0.1
+main: kingofturkey38\voting38\Main
+api: 4.0.3
+src-namespace-prefix: kingofturkey38\voting38
+description: Advanced voting plugin for mcpe
+...

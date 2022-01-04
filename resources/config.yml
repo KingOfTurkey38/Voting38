@@ -1,0 +1,13 @@
+---
+key: ""
+autoclaim: true
+
+vote_announcement: "{username} has voted and received 1 diamond"
+
+message_not_voted: "§cYou haven't voted today"
+message_voted: "§aYou have already voted today"
+
+
+commands:
+  - "give {username} diamond"
+...
