@@ -1,0 +1,8 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/KingOfTurkey38/Voting38
+build-by-default: true
+branches:
+- main
+projects:
+  Voting38:
+    path: ""
+...
