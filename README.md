@@ -1,2 +1,6 @@
 # Voting38
-High performance pocketmine 4.0 vote plugin
+This is a threaded high performance voting plugin for PocketMine-MP API 4.0
+
+You can configure messages and voting rewards in the config.
+There's also an "autoclaim" option in the config.
+If that is set to true the server will check every 30 seconds if the player has voted or not.
