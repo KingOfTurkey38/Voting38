@@ -23,7 +23,7 @@ class VotingThread extends Thread{
 				$operation = igbinary_unserialize($raw);
 
 				if($operation instanceof BaseThreadedPlayerOperation){
-					-$data = $operation->run();
+					$data = $operation->run();
 
 					$this->out[] = igbinary_serialize([$operation->getIdentifier(), $data]);
 					$this->notifier->wakeupSleeper();
