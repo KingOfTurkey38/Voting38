@@ -7,7 +7,7 @@ namespace kingofturkey38\voting38\operations;
 use Closure;
 use kingofturkey38\voting38\storage\ClosureStorage;
 
-abstract class BaseThreadedPlayerOperation {
+abstract class BaseThreadedPlayerOperation{
 
 	protected string $identifier;
 

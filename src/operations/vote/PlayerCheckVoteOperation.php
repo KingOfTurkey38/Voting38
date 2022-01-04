@@ -8,7 +8,7 @@ use Closure;
 use kingofturkey38\voting38\http\GetRequest;
 use kingofturkey38\voting38\operations\BaseThreadedPlayerOperation;
 
-class PlayerCheckVoteOperation extends BaseThreadedPlayerOperation {
+class PlayerCheckVoteOperation extends BaseThreadedPlayerOperation{
 
 	public function __construct(protected string $username, Closure $closure, protected string $key){
 		parent::__construct($this->username, $closure);

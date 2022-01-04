@@ -18,7 +18,6 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
-use pocketmine\snooze\SleeperHandler;
 use pocketmine\snooze\SleeperNotifier;
 use SOFe\AwaitGenerator\Await;
 use SOFe\AwaitStd\AwaitStd;
@@ -43,7 +42,7 @@ class Main extends PluginBase implements Listener{
 
 		$this->autoclaim = (bool) $this->getConfig()->get("autoclaim");
 		$this->key = $this->getConfig()->get("key");
-		
+
 		if($this->key === ""){
 			$this->getLogger()->emergency("No vote api key found in the config, disabling plugin");
 			$this->getServer()->getPluginManager()->disablePlugin($this);
@@ -60,7 +59,7 @@ class Main extends PluginBase implements Listener{
 		$this->getServer()->getCommandMap()->register("voting38", new VoteCommand($this));
 	}
 
-	public function onVote(PlayerVoteEvent $event): void {
+	public function onVote(PlayerVoteEvent $event) : void{
 		$player = $event->getPlayer();
 
 		$this->getServer()->broadcastMessage(str_replace("{username}", $player->getName(), $this->getConfig()->get("vote_announcement")));
@@ -70,11 +69,11 @@ class Main extends PluginBase implements Listener{
 		}
 	}
 
-	public function onJoin(PlayerJoinEvent $event): void {
+	public function onJoin(PlayerJoinEvent $event) : void{
 		if($this->autoclaim === true){
 			$player = $event->getPlayer();
 
-			Await::f2c(function() use($player) {
+			Await::f2c(function() use ($player){
 				while($player->isOnline() && $this->getServer()->isRunning()){
 					$this->checkVote($player, false);
 
@@ -84,7 +83,7 @@ class Main extends PluginBase implements Listener{
 		}
 	}
 
-	public function onMessageFromThread(): void {
+	public function onMessageFromThread() : void{
 		while(($raw = $this->in->shift())){
 			$response = igbinary_unserialize($raw);
 			$identifier = $response[0];
@@ -94,8 +93,8 @@ class Main extends PluginBase implements Listener{
 		}
 	}
 
-	public function checkVote(Player $player, bool $sendMessage = true): void {
-		Await::f2c(function() use($player, $sendMessage){
+	public function checkVote(Player $player, bool $sendMessage = true) : void{
+		Await::f2c(function() use ($player, $sendMessage){
 			$this->addOperation(new PlayerCheckVoteOperation($player->getName(), yield Await::RESOLVE, $this->key));
 			$data = yield Await::ONCE;
 
@@ -129,7 +128,7 @@ class Main extends PluginBase implements Listener{
 		});
 	}
 
-	public function addOperation(BaseThreadedPlayerOperation $operation): void {
+	public function addOperation(BaseThreadedPlayerOperation $operation) : void{
 		$this->out[] = igbinary_serialize($operation);
 	}
 }

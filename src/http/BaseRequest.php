@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace kingofturkey38\voting38\http;
 
-abstract class BaseRequest {
+abstract class BaseRequest{
 
 	protected string $url;
 

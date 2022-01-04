@@ -7,7 +7,7 @@ namespace kingofturkey38\voting38\http;
 class GetRequest extends BaseRequest{
 
 
-	public function execute() {
+	public function execute(){
 		$req = curl_init($this->url);
 
 		curl_setopt($req, CURLOPT_RETURNTRANSFER, true);

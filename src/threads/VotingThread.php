@@ -9,12 +9,13 @@ use pocketmine\snooze\SleeperNotifier;
 use pocketmine\thread\Thread;
 use Threaded;
 
-class VotingThread extends Thread {
+class VotingThread extends Thread{
 	public function __construct(
 		private SleeperNotifier $notifier,
 		private Threaded $in,
 		private Threaded $out
-	){ }
+	){
+	}
 
 	protected function onRun() : void{
 		while(!$this->isKilled){
@@ -22,7 +23,7 @@ class VotingThread extends Thread {
 				$operation = igbinary_unserialize($raw);
 
 				if($operation instanceof BaseThreadedPlayerOperation){
--					$data = $operation->run();
+					-$data = $operation->run();
 
 					$this->out[] = igbinary_serialize([$operation->getIdentifier(), $data]);
 					$this->notifier->wakeupSleeper();

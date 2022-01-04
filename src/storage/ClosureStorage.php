@@ -6,12 +6,12 @@ namespace kingofturkey38\voting38\storage;
 
 use Closure;
 
-class ClosureStorage {
+class ClosureStorage{
 
 	/** @var array<string, Closure> */
 	private static array $closures = [];
 
-	public static function executeClosure(string $identifier, $data): bool {
+	public static function executeClosure(string $identifier, $data) : bool{
 		if(isset(self::$closures[$identifier])){
 			(self::$closures[$identifier])($data);
 
@@ -21,7 +21,7 @@ class ClosureStorage {
 		return false;
 	}
 
-	public static function addClosure(string $identifier, Closure $closure): void {
+	public static function addClosure(string $identifier, Closure $closure) : void{
 		self::$closures[$identifier] = $closure;
 	}
 }
