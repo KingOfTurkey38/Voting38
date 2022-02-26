@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace kingofturkey38\voting38;
 
 use Closure;
+use Generator;
 use kingofturkey38\voting38\commands\VoteCommand;
 use kingofturkey38\voting38\events\PlayerVoteEvent;
 use kingofturkey38\voting38\operations\BaseThreadedPlayerOperation;
@@ -37,7 +38,11 @@ class Main extends PluginBase implements Listener{
 
 	private AwaitStd $std;
 
+	private static self $instance;
+
 	protected function onEnable() : void{
+		Main::$instance = $this;
+
 		$this->saveDefaultConfig();
 
 		$this->autoclaim = (bool) $this->getConfig()->get("autoclaim");
@@ -130,5 +135,17 @@ class Main extends PluginBase implements Listener{
 
 	public function addOperation(BaseThreadedPlayerOperation $operation) : void{
 		$this->out[] = igbinary_serialize($operation);
+	}
+
+	public function hasVoted(string $username, bool $includeNotClaimed = false) : Generator{
+		$this->addOperation(new PlayerCheckVoteOperation($username, yield Await::RESOLVE, $this->key));
+		$data = yield Await::ONCE;
+
+		return $includeNotClaimed ? (((int) $data) >= 1) : (((int) $data) === 2);
+	}
+
+
+	public static function getInstance() : Main{
+		return self::$instance;
 	}
 }
