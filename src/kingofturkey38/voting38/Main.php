@@ -64,6 +64,10 @@ class Main extends PluginBase implements Listener{
 		$this->getServer()->getCommandMap()->register("voting38", new VoteCommand($this));
 	}
 
+	/**
+	 * @param PlayerVoteEvent $event
+	 * @priority HIGHEST
+	 */
 	public function onVote(PlayerVoteEvent $event) : void{
 		$player = $event->getPlayer();
 
