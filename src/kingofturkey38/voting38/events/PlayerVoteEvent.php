@@ -9,11 +9,33 @@ use pocketmine\player\Player;
 
 class PlayerVoteEvent extends PlayerEvent{
 
-	public function __construct(Player $player){
+	private ?string $voteAnnouncement;
+
+	private bool $giveRewards;
+
+	public function __construct(Player $player, ?string $voteAnnouncement, bool $giveRewards = true){
 		$this->player = $player;
+		$this->voteAnnouncement = $voteAnnouncement;
+		$this->giveRewards = $giveRewards;
 	}
 
 	public function getPlayer() : Player{
 		return $this->player;
+	}
+
+	public function getVoteAnnouncement() : ?string{
+		return $this->voteAnnouncement;
+	}
+
+	public function shouldGiveRewards() : bool{
+		return $this->giveRewards;
+	}
+
+	public function setVoteAnnouncement(?string $voteAnnouncement) : void{
+		$this->voteAnnouncement = $voteAnnouncement;
+	}
+
+	public function setGiveRewards(bool $giveRewards) : void{
+		$this->giveRewards = $giveRewards;
 	}
 }

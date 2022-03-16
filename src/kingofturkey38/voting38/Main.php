@@ -67,10 +67,14 @@ class Main extends PluginBase implements Listener{
 	public function onVote(PlayerVoteEvent $event) : void{
 		$player = $event->getPlayer();
 
-		$this->getServer()->broadcastMessage(str_replace("{username}", $player->getName(), $this->getConfig()->get("vote_announcement")));
+		if($event->getVoteAnnouncement() !== null){
+			$this->getServer()->broadcastMessage($event->getVoteAnnouncement());
+		}
 
-		foreach($this->getConfig()->get("commands") as $v){
-			$this->getServer()->dispatchCommand(new ConsoleCommandSender($this->getServer(), $this->getServer()->getLanguage()), str_replace("{username}", $player->getName(), $v));
+		if($event->shouldGiveRewards()){
+			foreach($this->getConfig()->get("commands") as $v){
+				$this->getServer()->dispatchCommand(new ConsoleCommandSender($this->getServer(), $this->getServer()->getLanguage()), str_replace("{username}", $player->getName(), $v));
+			}
 		}
 	}
 
@@ -103,9 +107,10 @@ class Main extends PluginBase implements Listener{
 			$this->addOperation(new PlayerCheckVoteOperation($player->getName(), yield Await::RESOLVE, $this->key));
 			$data = yield Await::ONCE;
 
+
 			switch((int) $data){
 				case 0:
-					if($sendMessage){
+					if($sendMessage && $player->isOnline()){
 						$player->sendMessage($this->getConfig()->get("message_not_voted"));
 					}
 					break;
@@ -122,10 +127,15 @@ class Main extends PluginBase implements Listener{
 						return;
 					}
 
-					(new PlayerVoteEvent($player))->call();
+					(new PlayerVoteEvent(
+						$player,
+						str_replace("{username}", $player->getName(), $this->getConfig()->get("vote_announcement")),
+						true
+					))->call();
+
 					break;
 				case 2:
-					if($sendMessage){
+					if($sendMessage && $player->isOnline()){
 						$player->sendMessage($this->getConfig()->get("message_voted"));
 					}
 					break;
