@@ -1,5 +1,5 @@
 # Voting38
-This is a threaded high performance voting plugin for PocketMine-MP API 4.0
+This is a threaded high performance voting plugin for PocketMine-MP API 5.0
 
 You can configure messages and voting rewards in the config.
 There's also an "autoclaim" option in the config.

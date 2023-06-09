@@ -2,6 +2,10 @@
 name: Voting38
 version: 0.0.1
 main: kingofturkey38\voting38\Main
-api: 4.0.3
+api: 5.0.0
 description: Advanced voting plugin for mcpe
+permissions:
+  voting38.command.vote:
+    description: "Permission to use vote command"
+    default: true
 ...

@@ -13,24 +13,24 @@ use kingofturkey38\voting38\operations\vote\PlayerCheckVoteOperation;
 use kingofturkey38\voting38\operations\vote\PlayerUpdateVoteOperation;
 use kingofturkey38\voting38\storage\ClosureStorage;
 use kingofturkey38\voting38\threads\VotingThread;
+use pmmp\thread\ThreadSafeArray;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\player\Player;
+use pocketmine\plugin\DisablePluginException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
-use pocketmine\snooze\SleeperNotifier;
 use SOFe\AwaitGenerator\Await;
 use SOFe\AwaitStd\AwaitStd;
-use Threaded;
 
 class Main extends PluginBase implements Listener{
 
 	private VotingThread $thread;
 
-	private Threaded $in;
+	private ThreadSafeArray $in;
 
-	private Threaded $out;
+	private ThreadSafeArray $out;
 
 	private string $key;
 
@@ -50,13 +50,12 @@ class Main extends PluginBase implements Listener{
 
 		if($this->key === ""){
 			$this->getLogger()->emergency("No vote api key found in the config, disabling plugin");
-			$this->getServer()->getPluginManager()->disablePlugin($this);
-			return;
+			throw new DisablePluginException();
 		}
 
 		$this->std = AwaitStd::init($this);
-		$this->thread = new VotingThread($notifier = new SleeperNotifier(), $this->out = new Threaded(), $this->in = new Threaded());
-		Server::getInstance()->getTickSleeper()->addNotifier($notifier, Closure::fromCallable([$this, "onMessageFromThread"]));
+		$sleeperEntry = Server::getInstance()->getTickSleeper()->addNotifier(Closure::fromCallable([$this, "onMessageFromThread"]));
+		$this->thread = new VotingThread($sleeperEntry, $this->out = new ThreadSafeArray(), $this->in = new ThreadSafeArray());
 
 		$this->thread->start();
 
