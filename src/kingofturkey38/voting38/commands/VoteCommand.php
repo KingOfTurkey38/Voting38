@@ -15,6 +15,7 @@ class VoteCommand extends Command implements PluginOwned{
 
 	public function __construct(private Main $plugin){
 		parent::__construct("vote", "Claim your vote");
+		$this->setPermission("voting38.command.vote");
 	}
 
 
